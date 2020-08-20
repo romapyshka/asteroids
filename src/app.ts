@@ -7,4 +7,6 @@ app.get('/', (req: Request, res:Response, next: NextFunction) => {
 
 });
 
-app.listen(5000, () => console.log('Server running'));
+const port = process.env.PORT || 80
+
+app.listen(port, () => console.log('Server running'));
