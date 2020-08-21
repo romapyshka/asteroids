@@ -12,6 +12,7 @@
     "@types/express": "^4.17.7",
     "@types/node": "^14.6.0",
     "@types/three": "^0.103.2",
+    "browserify": "^16.5.2",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
@@ -19,7 +20,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
-    "build": "tsc -p ."
+    "build": "tsc && browserify ./dist/main.js -o ./public/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -33,4 +34,3 @@
   },
   "homepage": "https://github.com/romapyshka/asteroids#readme"
 }
-
