@@ -20,20 +20,123 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var THREE = __importStar(require("three"));
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+var canvasWidth = window.innerWidth;
+var canvasHeight = window.innerHeight;
+var keys = [];
+var bulls = [];
+var asteroids = [];
+var score = 0;
+var lives = 3;
+var ship;
 var renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(canvasWidth, canvasHeight);
 document.body.appendChild(renderer.domElement);
-var geometry = new THREE.BoxGeometry();
-var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-var cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-camera.position.z = 5;
-var animate = function () {
-    requestAnimationFrame(animate);
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-    renderer.render(scene, camera);
-};
-animate();
+var Ship = /** @class */ (function () {
+    function Ship() {
+        this.visible = true;
+        this.x = canvasWidth / 2;
+        this.y = canvasHeight / 2;
+        this.movingForward = false;
+        this.speed = 0.1;
+        this.velX = 0;
+        this.velY = 0;
+        this.rotateSpeed = 0.001;
+        this.radius = 15;
+        this.angle = 0;
+        this.strokeColor = 'white';
+        this.noseX = canvasWidth / 2 + 15;
+        this.noseY = canvasHeight / 2;
+    }
+    Ship.prototype.Rotate = function (dir) {
+        this.angle += this.rotateSpeed * dir;
+    };
+    // Update direction of the ship
+    Ship.prototype.Update = function () {
+        var radians = this.angle / Math.PI * 180;
+        if (this.movingForward) {
+            this.velX += Math.cos(radians) * this.speed;
+            this.velY += Math.sin(radians) * this.speed;
+        }
+        // if (this.x < this.radius) {
+        //     this.x = canvas.width;
+        // }
+        // if (this.x > canvas.width) {
+        //     this.x = this.radius;
+        // }
+        // if (this.y < this.radius) {
+        //     this.y = canvas.height;
+        // }
+        // if (this.y > canvas.height) {
+        //     this.y = this.radius;
+        // }
+        this.velX *= 0.99;
+        this.velY *= 0.99;
+        this.x -= this.velX;
+        this.y -= this.velY;
+    };
+    // Draw the ship
+    Ship.prototype.Draw = function () {
+    };
+    return Ship;
+}());
+var Bullet = /** @class */ (function () {
+    function Bullet(angle) {
+        this.visible = true;
+        this.x = ship.noseX;
+        this.y = ship.noseY;
+        this.angle = angle;
+        this.height = 4;
+        this.width = 4;
+        this.speed = 5;
+        this.velX = 0;
+        this.velY = 0;
+    }
+    Bullet.prototype.Update = function () {
+        var radians = this.angle / Math.PI * 180;
+        this.x -= Math.cos(radians) * this.speed;
+        this.y -= Math.sin(radians) * this.speed;
+    };
+    // Draw the bullet
+    Bullet.prototype.Draw = function () {
+    };
+    return Bullet;
+}());
+var Asteroid = /** @class */ (function () {
+    function Asteroid(x, y, radius, level, collisionRadius) {
+        this.visible = true;
+        this.x = x || Math.floor(Math.random() * canvasWidth);
+        this.y = y || Math.floor(Math.random() * canvasHeight);
+        this.speed = 3;
+        this.radius = radius || 50;
+        this.angle = Math.floor(Math.random() * 359);
+        this.strokeColor = 'white';
+        this.collisionRadius = collisionRadius || 46;
+        this.level = level || 1;
+    }
+    Asteroid.prototype.Update = function () {
+        var radians = this.angle / Math.PI * 180;
+        this.x += Math.cos(radians) * this.speed;
+        this.y += Math.sin(radians) * this.speed;
+        // if (this.x < this.radius) {
+        //     this.x = canvas.width;
+        // }
+        // if (this.x > canvas.width) {
+        //     this.x = this.radius;
+        // }
+        // if (this.y < this.radius) {
+        //     this.y = canvas.height;
+        // }
+        // if (this.y > canvas.height) {
+        //     this.y = this.radius;
+        // }
+    };
+    // Draw asteroids
+    Asteroid.prototype.Draw = function () {
+    };
+    return Asteroid;
+}());
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500);
+camera.position.set(0, 0, 100);
+camera.lookAt(0, 0, 0);
+var scene = new THREE.Scene();
+renderer.render(scene, camera);
