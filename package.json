@@ -18,9 +18,7 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts",
-    "build": "tsc && browserify ./dist/main.js -o ./public/bundle.js"
+    "start": "node app.js",
   },
   "repository": {
     "type": "git",
