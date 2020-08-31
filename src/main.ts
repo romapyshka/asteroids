@@ -1,6 +1,52 @@
 import * as THREE from 'three';
 import Ship from "./ship";
 
+window.addEventListener("load", main);
+function main() {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    document.body.appendChild(renderer.domElement);
+
+    camera.position.z = 10;
+    camera.position.y = 10;
+    camera.rotation.x = -45 * Math.PI / 180;
+
+    const light = new THREE.PointLight("white", 1, 100);
+    light.position.set(0,10,0);
+    scene.add(light);
+
+    const ambient = new THREE.AmbientLight("white", 0.2);
+    scene.add(ambient);
+
+    const ship = new Ship(scene);
+
+    let lastTS: number = 0;
+
+    function animate(ts: number) {
+        ship.update();
+        renderer.render( scene, camera );
+        requestAnimationFrame( animate );
+            let timeDelta = (ts - lastTS) / 1000;
+            lastTS = ts;
+    }
+
+    requestAnimationFrame(animate);
+}
+
+
+
+
+
+
+
+
+
+
 
 //
 // let ship: Ship;
@@ -57,44 +103,6 @@ import Ship from "./ship";
 //
 // }
 // ship = new Ship();
-
-window.addEventListener("load", main);
-function main() {
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    document.body.appendChild(renderer.domElement);
-
-    camera.position.z = 10;
-    camera.position.y = 10;
-    camera.rotation.x = -45 * Math.PI / 180;
-
-    const light = new THREE.PointLight("white", 1, 100);
-    light.position.set(0,10,0);
-    scene.add(light);
-
-    const ambient = new THREE.AmbientLight("white", 0.2);
-    scene.add(ambient);
-
-    const ship = new Ship(scene);
-
-
-    function animate() {
-        ship.update();
-        renderer.render( scene, camera );
-        requestAnimationFrame( animate );
-
-    }
-
-    animate();
-    console.log("Done");
-}
-
-
 
 
 
