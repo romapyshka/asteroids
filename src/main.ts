@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import Ship from "./ship";
+import Asteroids from "./asteroids";
 
 window.addEventListener("load", main);
 function main() {
@@ -24,6 +25,7 @@ function main() {
     scene.add(ambient);
 
     const ship = new Ship(scene);
+    const asteroids = new Asteroids(scene);
 
     let lastTS: number = 0;
 
