@@ -4,17 +4,11 @@ export default class Ship {
     private up: boolean = false;
     private right: boolean = false;
     private left: boolean = false;
+    private space: boolean = false;
     readonly object: THREE.Object3D;
     private clock = new THREE.Clock();
     private angle: number = 0;
     private FPS: number = 30;
-    private shipTrust: number = 5; //acceleration of the ship
-    private shipFriction: number = 0.7; //drifting of the ship
-    private turnSpeed: number = 360; //turn speed
-    private rot: number = 0;
-    private trusting: boolean = false; //does ship fly or not
-    private trust = {x: 0, y: 0};
-
 
     public constructor(scene: THREE.Scene) {
         window.addEventListener("keydown", this.handleKeyDown.bind(this));
@@ -33,6 +27,7 @@ export default class Ship {
             case "ArrowUp": this.up = true; break;
             case "ArrowRight": this.right = true; break;
             case "ArrowLeft": this.left = true; break;
+            case "Space": this.space = true; break;
         }
     }
 
@@ -41,7 +36,18 @@ export default class Ship {
             case "ArrowUp": this.up = false; break;
             case "ArrowRight": this.right = false; break;
             case "ArrowLeft": this.left = false; break;
+            case "Space": this.space = false; break;
         }
+    }
+
+    public shoot(scene: THREE.Scene) {
+        const bullet = new THREE.Mesh(
+            new THREE.SphereGeometry(0.3, 100, 100 ),
+            new THREE.MeshStandardMaterial({
+                color: "white",
+            }),
+        );
+        scene.add(bullet);
     }
 
     public update() {

@@ -13,8 +13,8 @@ function main() {
     renderer.outputEncoding = THREE.sRGBEncoding;
     document.body.appendChild(renderer.domElement);
 
-    camera.position.z = 10;
-    camera.position.y = 10;
+    camera.position.z = 20;
+    camera.position.y = 20;
     camera.rotation.x = -45 * Math.PI / 180;
 
     const light = new THREE.PointLight("white", 1, 100);
@@ -31,6 +31,7 @@ function main() {
 
     function animate(ts: number) {
         ship.update();
+        asteroids.update();
         renderer.render( scene, camera );
         requestAnimationFrame( animate );
             let timeDelta = (ts - lastTS) / 1000;
