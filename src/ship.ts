@@ -1,14 +1,11 @@
 import * as THREE from 'three';
+import Asteroids from "./asteroids";
 
 export default class Ship {
     private up: boolean = false;
     private right: boolean = false;
     private left: boolean = false;
-    private space: boolean = false;
     readonly object: THREE.Object3D;
-    private clock = new THREE.Clock();
-    private angle: number = 0;
-    private FPS: number = 30;
 
     public constructor(scene: THREE.Scene) {
         window.addEventListener("keydown", this.handleKeyDown.bind(this));
@@ -27,7 +24,6 @@ export default class Ship {
             case "ArrowUp": this.up = true; break;
             case "ArrowRight": this.right = true; break;
             case "ArrowLeft": this.left = true; break;
-            case "Space": this.space = true; break;
         }
     }
 
@@ -36,7 +32,6 @@ export default class Ship {
             case "ArrowUp": this.up = false; break;
             case "ArrowRight": this.right = false; break;
             case "ArrowLeft": this.left = false; break;
-            case "Space": this.space = false; break;
         }
     }
 
@@ -48,51 +43,23 @@ export default class Ship {
             }),
         );
         scene.add(bullet);
+        bullet.position.set(
+            bullet.position.x = this.object.position.x,
+            bullet.position.y = this.object.position.y,
+            bullet.position.z = this.object.position.z,
+        );
     }
 
-    public update() {
+    public update(timeDelta: number) {
         if(this.up){
-           this.object.position.x -= 3 * Math.sin(this.angle) / this.FPS;
-           this.object.position.z -= 3 * Math.cos(this.angle) / this.FPS;
+           this.object.position.x += 5 * Math.sin(this.object.rotation.y) * timeDelta;
+           this.object.position.z += 5 * Math.cos(this.object.rotation.y) * timeDelta;
         }
         if(this.left){
-            this.object.rotation.y += 5 * this.clock.getDelta();
-            this.angle += 5 * Math.PI / 180;
+            this.object.rotation.y += 3 * timeDelta;
         }
         if(this.right){
-            this.object.rotation.y -= 5 * this.clock.getDelta();
-            this.angle -= 5 * Math.PI / 180;
+            this.object.rotation.y -= 3 * timeDelta;
         }
     }
 }
-
-
-//
-// public move() {
-//     this.angle += this.rot;
-//
-//     this.object.position.x += this.trust.x;
-//     this.object.position.z += this.trust.y;
-//
-//     if(this.trusting == true){
-//         this.trust.x += this.shipTrust * Math.cos(this.angle) / this.FPS;
-//         this.trust.y -= this.shipTrust * Math.sin(this.angle) / this.FPS;
-//     } else {
-//         this.trust.x += this.shipFriction * Math.cos(this.angle) / this.FPS;
-//         this.trust.y -= this.shipFriction * Math.sin(this.angle) / this.FPS;
-//     }
-//
-// }
-//
-// public update() {
-//     if(this.up){
-//         this.trusting = true;
-//         this.move();
-//     }
-//     if(this.left){
-//         this.object.rotation.y = this.turnSpeed / 180 * Math.PI / this.FPS;
-//     }
-//     if(this.right){
-//         this.object.rotation.y = -this.turnSpeed / 180 * Math.PI / this.FPS;
-//     }
-// }
