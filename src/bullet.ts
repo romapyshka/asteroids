@@ -6,7 +6,7 @@ import ship from "./ship";
 export default class Bullet {
     readonly object: THREE.Object3D;
     private space: boolean = false;
-    private scene: THREE.Scene;
+    private scene!: THREE.Scene;
 
     public constructor(scene: THREE.Scene) {
         this.object = new THREE.Mesh(
