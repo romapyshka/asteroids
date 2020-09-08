@@ -27,8 +27,8 @@ function main() {
 
     const ship = new Ship(scene);
     const asteroids = new Asteroids(scene);
-    const bullet = new Bullet(scene);
-
+    const asteroids1 = new Asteroids(scene);
+    const asteroids2 = new Asteroids(scene);
 
     let lastTS: number = 0;
 
@@ -40,7 +40,8 @@ function main() {
 
         ship.update(timeDelta);
         asteroids.update(timeDelta);
-        bullet.update(scene);
+        asteroids1.update(timeDelta);
+        asteroids2.update(timeDelta);
 
         // console.log(timeDelta);
 

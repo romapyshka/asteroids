@@ -35,21 +35,6 @@ export default class Ship {
         }
     }
 
-    public shoot(scene: THREE.Scene) {
-        const bullet = new THREE.Mesh(
-            new THREE.SphereGeometry(0.3, 100, 100 ),
-            new THREE.MeshStandardMaterial({
-                color: "white",
-            }),
-        );
-        scene.add(bullet);
-        bullet.position.set(
-            bullet.position.x = this.object.position.x,
-            bullet.position.y = this.object.position.y,
-            bullet.position.z = this.object.position.z,
-        );
-    }
-
     public update(timeDelta: number) {
         if(this.up){
            this.object.position.x += 5 * Math.sin(this.object.rotation.y) * timeDelta;

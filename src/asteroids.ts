@@ -23,6 +23,7 @@ export default class Asteroids {
         this.object.position.x -= 3 * Math.sin(asteroidAngle) * timeDelta;
         this.object.position.z -= 3 * Math.cos(asteroidAngle) * timeDelta;
         // console.log(this.object.position.x, this.object.position.z);
+        // console.log(asteroidAngle);
         if(this.object.position.x > 15){
            this.object.position.x = -15;
         }
@@ -48,7 +49,3 @@ function angle(radian: number) {
     return radian *= Math.PI / 180;
 
 }
-
-function addAsteroids() {
-
-   }
