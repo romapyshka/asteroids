@@ -1,11 +1,15 @@
 import * as THREE from 'three';
-import Asteroids from "./asteroids";
+import Bullet from "./bullet";
+
 
 export default class Ship {
     private up: boolean = false;
     private right: boolean = false;
     private left: boolean = false;
+    private space: boolean = false;
     readonly object: THREE.Object3D;
+    private scene: THREE.Scene;
+    private bullets: Array<Bullet> = [];
 
     public constructor(scene: THREE.Scene) {
         window.addEventListener("keydown", this.handleKeyDown.bind(this));
@@ -17,6 +21,7 @@ export default class Ship {
             }),
         );
         scene.add(this.object);
+        this.scene = scene;
     }
 
     public handleKeyDown(event: KeyboardEvent) {
@@ -24,6 +29,7 @@ export default class Ship {
             case "ArrowUp": this.up = true; break;
             case "ArrowRight": this.right = true; break;
             case "ArrowLeft": this.left = true; break;
+            case "Space": this.space = true; break;
         }
     }
 
@@ -32,6 +38,7 @@ export default class Ship {
             case "ArrowUp": this.up = false; break;
             case "ArrowRight": this.right = false; break;
             case "ArrowLeft": this.left = false; break;
+            case "Space": this.space = false; break;
         }
     }
 
@@ -46,5 +53,9 @@ export default class Ship {
         if(this.right){
             this.object.rotation.y -= 3 * timeDelta;
         }
+        if(this.space){
+            this.bullets.push(new Bullet(this.scene, this.object.position, this.object.rotation.y));
+        }
+        for(const bullet of this.bullets) bullet.update(timeDelta);
     }
 }

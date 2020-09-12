@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import Ship from "./ship";
-import Asteroids from "./asteroids";
-import Bullet from "./ship"
+import Asteroid from "./asteroid";
+import Bullet from "./bullet"
 
 window.addEventListener("load", main);
 function main() {
@@ -26,9 +26,13 @@ function main() {
     scene.add(ambient);
 
     const ship = new Ship(scene);
-    const asteroids = new Asteroids(scene);
-    const asteroids1 = new Asteroids(scene);
-    const asteroids2 = new Asteroids(scene);
+    const asteroids = [
+        new Asteroid(scene),
+        new Asteroid(scene),
+        new Asteroid(scene),
+        new Asteroid(scene),
+        new Asteroid(scene),
+    ];
 
     let lastTS: number = 0;
 
@@ -39,12 +43,7 @@ function main() {
         lastTS = ts;
 
         ship.update(timeDelta);
-        asteroids.update(timeDelta);
-        asteroids1.update(timeDelta);
-        asteroids2.update(timeDelta);
-
-        // console.log(timeDelta);
-
+        for(const asteroid of asteroids) asteroid.update(timeDelta, ship.object.position.x, ship.object.position.z,);
     }
 
     requestAnimationFrame(animate);

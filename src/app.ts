@@ -1,7 +1,7 @@
 import express from "express";
 
 // integration with heroku
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 8000;
 const app = express();
 
 app.use(express.static(`public`));
