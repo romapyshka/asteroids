@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import Ship from "./ship";
 import Asteroid from "./asteroid";
 import Bullet from "./bullet"
+import gamefacade from "./gamefacade";
+import GameFacade from "./gamefacade";
 
 window.addEventListener("load", main);
 function main() {
@@ -25,14 +27,9 @@ function main() {
     const ambient = new THREE.AmbientLight("white", 0.2);
     scene.add(ambient);
 
-    const ship = new Ship(scene);
-    const asteroids = [
-        new Asteroid(scene),
-        new Asteroid(scene),
-        new Asteroid(scene),
-        new Asteroid(scene),
-        new Asteroid(scene),
-    ];
+    const gameFacade = new GameFacade(scene);
+
+    gameFacade.startObjects(scene);
 
     let lastTS: number = 0;
 
@@ -42,8 +39,7 @@ function main() {
         let timeDelta = (ts - lastTS) / 1000;
         lastTS = ts;
 
-        ship.update(timeDelta);
-        for(const asteroid of asteroids) asteroid.update(timeDelta, ship.object.position.x, ship.object.position.z,);
+        gameFacade.update(timeDelta, scene);
     }
 
     requestAnimationFrame(animate);

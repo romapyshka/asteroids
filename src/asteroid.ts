@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Bullet from "./bullet";
 
 export default class Asteroid {
     readonly object: THREE.Object3D;
@@ -39,11 +40,23 @@ export default class Asteroid {
         if (this.object.position.z < -15) {
             this.object.position.z = 15;
         }
+        // const distanceShip = Math.sqrt(Math.pow((shipPositionX - this.object.position.x), 2) + Math.pow((shipPositionZ - this.object.position.z), 2));
+        // if (distanceShip < 1.9) {
+        //     this.scene.remove(this.object);
+        // }
+        // const distanceBullet = Math.sqrt(Math.pow((this.Bullet.object.position.x - this.object.position.x), 2) + Math.pow((this.Bullet.object.position.z - this.object.position.z), 2));
+        // if (distanceBullet < 1.9) {
+        //     this.scene.remove(this.object);
+        // }
+    }
+
+    public checkCollision(scene: THREE.Scene, shipPositionX: number, shipPositionZ: number){
         const distanceShip = Math.sqrt(Math.pow((shipPositionX - this.object.position.x), 2) + Math.pow((shipPositionZ - this.object.position.z), 2));
         if (distanceShip < 1.9) {
-            this.scene.remove(this.object);
+            scene.remove(this.object);
         }
     }
+
 }
 
 function random(min: number, max: number) {

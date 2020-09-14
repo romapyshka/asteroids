@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import Bullet from "./bullet";
 
 
+
 export default class Ship {
     private up: boolean = false;
     private right: boolean = false;
@@ -53,9 +54,12 @@ export default class Ship {
         if(this.right){
             this.object.rotation.y -= 3 * timeDelta;
         }
-        if(this.space){
-            this.bullets.push(new Bullet(this.scene, this.object.position, this.object.rotation.y));
-        }
-        for(const bullet of this.bullets) bullet.update(timeDelta);
+        // if(this.space){
+        //     this.bullets.push(new Bullet(this.scene, this.object.position, this.object.rotation.y,));
+        // }
+        // for(const bullet of this.bullets) bullet.update(timeDelta);
     }
 }
+
+
+
