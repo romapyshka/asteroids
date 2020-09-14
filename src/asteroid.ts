@@ -3,7 +3,7 @@ import Bullet from "./bullet";
 
 export default class Asteroid {
     readonly object: THREE.Object3D;
-    private asteroidAngle: number;
+    readonly asteroidAngle: number;
     private scene: THREE.Scene;
     private static geometry = new THREE.SphereGeometry(1, 5, 5);
     private static material = new THREE.MeshStandardMaterial({color: "white",});
@@ -40,23 +40,15 @@ export default class Asteroid {
         if (this.object.position.z < -15) {
             this.object.position.z = 15;
         }
-        // const distanceShip = Math.sqrt(Math.pow((shipPositionX - this.object.position.x), 2) + Math.pow((shipPositionZ - this.object.position.z), 2));
-        // if (distanceShip < 1.9) {
-        //     this.scene.remove(this.object);
-        // }
-        // const distanceBullet = Math.sqrt(Math.pow((this.Bullet.object.position.x - this.object.position.x), 2) + Math.pow((this.Bullet.object.position.z - this.object.position.z), 2));
-        // if (distanceBullet < 1.9) {
-        //     this.scene.remove(this.object);
-        // }
     }
 
     public checkCollision(scene: THREE.Scene, shipPositionX: number, shipPositionZ: number){
         const distanceShip = Math.sqrt(Math.pow((shipPositionX - this.object.position.x), 2) + Math.pow((shipPositionZ - this.object.position.z), 2));
         if (distanceShip < 1.9) {
             scene.remove(this.object);
+            return true;
         }
     }
-
 }
 
 function random(min: number, max: number) {

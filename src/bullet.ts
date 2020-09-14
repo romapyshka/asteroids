@@ -18,6 +18,14 @@ export default class Bullet {
         this.scene = scene;
     }
 
+    public checkCollision(scene: THREE.Scene, asteroidPositionX: number, asteroidPositionZ: number, asteroid: THREE.Object3D){
+        const distanceShip = Math.sqrt(Math.pow((asteroidPositionX - this.object.position.x), 2) + Math.pow((asteroidPositionZ - this.object.position.z), 2));
+        if (distanceShip < 1.9) {
+            scene.remove(this.object);
+            scene.remove(asteroid)
+        }
+    }
+
     public update(timeDelta: number) {
         this.object.position.x += 10 * Math.sin(this.object.rotation.y) * timeDelta;
         this.object.position.z += 10 * Math.cos(this.object.rotation.y) * timeDelta;
@@ -33,10 +41,5 @@ export default class Bullet {
         if(this.object.position.z < -15){
            this.scene.remove(this.object);
         }
-        // const distanceBullet = Math.sqrt(Math.pow((asteroidPositionX - this.object.position.x), 2) + Math.pow((asteroidPositionZ - this.object.position.z), 2));
-        // if (distanceBullet < 1.9) {
-        //     this.scene.remove(this.object);
-        //     this.scene.remove(asteroid);
-        // }
     }
 }

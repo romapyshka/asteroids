@@ -1,8 +1,4 @@
 import * as THREE from 'three';
-import Ship from "./ship";
-import Asteroid from "./asteroid";
-import Bullet from "./bullet"
-import gamefacade from "./gamefacade";
 import GameFacade from "./gamefacade";
 
 window.addEventListener("load", main);
