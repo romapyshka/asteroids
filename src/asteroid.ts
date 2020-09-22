@@ -1,18 +1,15 @@
 import * as THREE from 'three';
-import Bullet from "./bullet";
+import Ship from "./ship";
 
 export default class Asteroid {
-    readonly object: THREE.Object3D;
+    readonly object: THREE.Scene;
     readonly asteroidAngle: number;
     private scene: THREE.Scene;
-    private static geometry = new THREE.SphereGeometry(1, 5, 5);
-    private static material = new THREE.MeshStandardMaterial({color: "white",});
+    // private static geometry = new THREE.SphereGeometry(1, 5, 5);
+    // private static material = new THREE.MeshStandardMaterial({color: "white",});
 
-    public constructor(scene: THREE.Scene) {
-        this.object = new THREE.Mesh(
-            Asteroid.geometry,
-            Asteroid.material,
-        );
+    public constructor(scene: THREE.Scene, model: THREE.Scene) {
+        this.object = model.clone();
         this.asteroidAngle = angle(Math.round(random(-180, 180)));
         this.object.position.set(
             this.object.position.x = random(-8, 8),
@@ -23,11 +20,9 @@ export default class Asteroid {
         this.scene = scene;
     }
 
-    public update(timeDelta: number, shipPositionX: number, shipPositionZ: number,) {
+    public update(timeDelta: number) {
         this.object.position.x -= 3 * Math.sin(this.asteroidAngle) * timeDelta;
         this.object.position.z -= 3 * Math.cos(this.asteroidAngle) * timeDelta;
-        // console.log(this.object.position.x, this.object.position.z);
-        // console.log(asteroidAngle);
         if (this.object.position.x > 15) {
             this.object.position.x = -15;
         }
@@ -42,12 +37,12 @@ export default class Asteroid {
         }
     }
 
-    public checkCollision(scene: THREE.Scene, shipPositionX: number, shipPositionZ: number){
-        const distanceShip = Math.sqrt(Math.pow((shipPositionX - this.object.position.x), 2) + Math.pow((shipPositionZ - this.object.position.z), 2));
-        if (distanceShip < 1.9) {
-            scene.remove(this.object);
-            return true;
-        }
+    public distanceCollision(ship: Ship){
+        return Math.sqrt(Math.pow((ship.object.position.x - this.object.position.x), 2) + Math.pow((ship.object.position.z - this.object.position.z), 2));
+    }
+
+    public dispose(){
+        this.scene.remove(this.object);
     }
 }
 

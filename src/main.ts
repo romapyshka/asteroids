@@ -1,8 +1,26 @@
 import * as THREE from 'three';
-import GameFacade from "./gamefacade";
+import Game from "./game";
+import GLTFLoader from "three-gltf-loader";
 
 window.addEventListener("load", main);
-function main() {
+async function main() {
+    const loader = new GLTFLoader();
+    async function load(path: string, x:number, y:number, z:number) {
+        return new Promise<THREE.Scene>(resolve => {
+            loader.load(path, gltf => {
+                let object = gltf.scene.children[0];
+                object.scale.set(x,y,z);
+                // object.rotation.x -= 1.5;
+                resolve(gltf.scene);
+            });
+        });
+    }
+    const shipObject = await load('model/ship/scene.gltf', 0.01,0.01,0.01);
+    const asteroidObject = await load('model/asteroid/scene.gltf',0.01,0.01,0.01);
+    const bulletObject = await load('model/bullet/scene.gltf', 0.5,0.5,0.5);
+
+
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -23,9 +41,9 @@ function main() {
     const ambient = new THREE.AmbientLight("white", 0.2);
     scene.add(ambient);
 
-    const gameFacade = new GameFacade(scene);
+    const game = new Game(scene, shipObject, asteroidObject);
 
-    gameFacade.startObjects(scene);
+    game.startObjects(scene, asteroidObject);
 
     let lastTS: number = 0;
 
@@ -35,7 +53,7 @@ function main() {
         let timeDelta = (ts - lastTS) / 1000;
         lastTS = ts;
 
-        gameFacade.update(timeDelta, scene);
+        game.update(timeDelta, scene, bulletObject);
     }
 
     requestAnimationFrame(animate);
