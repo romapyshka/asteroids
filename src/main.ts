@@ -5,19 +5,19 @@ import GLTFLoader from "three-gltf-loader";
 window.addEventListener("load", main);
 async function main() {
     const loader = new GLTFLoader();
-    async function load(path: string, x:number, y:number, z:number) {
+    async function load(path: string, x:number, y:number, z:number, rot: number) {
         return new Promise<THREE.Scene>(resolve => {
             loader.load(path, gltf => {
                 let object = gltf.scene.children[0];
                 object.scale.set(x,y,z);
-                // object.rotation.x -= 1.5;
+                object.rotation.x += rot;
                 resolve(gltf.scene);
             });
         });
     }
-    const shipObject = await load('model/ship/scene.gltf', 0.01,0.01,0.01);
-    const asteroidObject = await load('model/asteroid/scene.gltf',0.01,0.01,0.01);
-    const bulletObject = await load('model/bullet/scene.gltf', 0.5,0.5,0.5);
+    const shipObject = await load('model/ship/scene.gltf', 0.01,0.01,0.01, 0);
+    const asteroidObject = await load('model/asteroid/scene.gltf',0.01,0.01,0.01, 0);
+    const bulletObject = await load('model/bullet/scene.gltf', 0.05,0.05,0.05, 1.5);
 
 
 

@@ -51,6 +51,10 @@ export default class Ship {
             this.object.rotation.y -= 3 * timeDelta;
         }
     }
+
+    public dispose(){
+        this.scene.remove(this.object);
+    }
 }
 //
 // function main() {

@@ -9,6 +9,7 @@ export default class Game {
     private bullets: Array<Bullet> = [];
     private asteroids: Array<Asteroid> = [];
     private ship: Ship;
+    private life: number;
     // private asteroid: Asteroid;
 
     constructor(scene: THREE.Scene, modelShip: THREE.Scene, modelAsteroid: THREE.Scene) {
@@ -16,6 +17,7 @@ export default class Game {
         window.addEventListener("keyup", this.handleKeyUp.bind(this));
         this.ship = new Ship(scene, modelShip);
         // this.asteroid = new Asteroid(scene, modelAsteroid);
+        this.life = 3;
     }
 
     public handleKeyDown(event: KeyboardEvent) {
@@ -78,6 +80,11 @@ export default class Game {
                 asteroid.dispose();
                 this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
                 this.ship.object.position.set(0,0,0);
+                this.life -= 1;
+                console.log(this.life);
+                if (this.life == 0){
+                    this.ship.dispose();
+                }
                 continue;
             }
             const bullets = this.bullets.slice(0);
