@@ -8,11 +8,11 @@ export default class Asteroid {
     // private static geometry = new THREE.SphereGeometry(1, 5, 5);
     // private static material = new THREE.MeshStandardMaterial({color: "white",});
 
-    public constructor(scene: THREE.Scene, model: THREE.Scene) {
+    public constructor(scene: THREE.Scene, model: THREE.Scene, AsteroidX: number, AsteroidZ: number) {
         this.object = model.clone();
         this.asteroidAngle = angle(Math.round(random(-180, 180)));
         this.object.position.set(
-            this.object.position.x = random(-8, 8),
+            this.object.position.x = AsteroidX,
             this.object.position.z = 0,
             this.object.position.z = random(-8, 8),
         );

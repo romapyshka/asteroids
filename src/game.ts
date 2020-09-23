@@ -8,11 +8,12 @@ export default class Game {
     private space: boolean = false;
     private bullets: Array<Bullet> = [];
     private asteroids: Array<Asteroid> = [];
+    private asteroidsSmall: Array<Asteroid> = [];
     private ship: Ship;
     private life: number;
     // private asteroid: Asteroid;
 
-    constructor(scene: THREE.Scene, modelShip: THREE.Scene, modelAsteroid: THREE.Scene) {
+    constructor(scene: THREE.Scene, modelShip: THREE.Scene) {
         window.addEventListener("keydown", this.handleKeyDown.bind(this));
         window.addEventListener("keyup", this.handleKeyUp.bind(this));
         this.ship = new Ship(scene, modelShip);
@@ -34,12 +35,12 @@ export default class Game {
 
     public startObjects(scene: THREE.Scene, modelAsteroid: THREE.Scene) {
         this.asteroids = [
-            new Asteroid(scene, modelAsteroid),
-            new Asteroid(scene, modelAsteroid),
-            new Asteroid(scene, modelAsteroid),
-            new Asteroid(scene, modelAsteroid),
-            new Asteroid(scene, modelAsteroid),
-            new Asteroid(scene, modelAsteroid),
+            new Asteroid(scene, modelAsteroid, random(-8, 8), random(-8, 8)),
+            new Asteroid(scene, modelAsteroid, random(-8, 8), random(-8, 8)),
+            new Asteroid(scene, modelAsteroid, random(-8, 8), random(-8, 8)),
+            new Asteroid(scene, modelAsteroid, random(-8, 8), random(-8, 8)),
+            new Asteroid(scene, modelAsteroid, random(-8, 8), random(-8, 8)),
+            new Asteroid(scene, modelAsteroid, random(-8, 8), random(-8, 8)),
         ];
     }
 
@@ -66,22 +67,14 @@ export default class Game {
         }
     }
 
-    public update(timeDelta: number, scene: THREE.Scene, modelBullet: THREE.Scene) {
-        this.ship.update(timeDelta);
-
-        this.shootingProcess(timeDelta, scene, modelBullet);
-        for (const bullet of this.bullets) bullet.update(timeDelta);
-        for (const bullet of this.bullets) this.checkBordersForBullet(bullet);
-        for (const asteroid of this.asteroids) asteroid.update(timeDelta);
-
-        const asteroids = this.asteroids.slice(0);
+    public smallAsteroidCheckCollision(){
+        const asteroids = this.asteroidsSmall.slice(0);
         for (const asteroid of asteroids){
             if (asteroid.distanceCollision(this.ship) < 1.7){
                 asteroid.dispose();
-                this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
+                this.asteroidsSmall.splice(this.asteroidsSmall.indexOf(asteroid), 1);
                 this.ship.object.position.set(0,0,0);
                 this.life -= 1;
-                console.log(this.life);
                 if (this.life == 0){
                     this.ship.dispose();
                 }
@@ -93,29 +86,53 @@ export default class Game {
                     bullet.dispose();
                     this.bullets.splice(this.bullets.indexOf(bullet), 1);
                     asteroid.dispose();
-                    this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
+                    this.asteroidsSmall.splice(this.asteroidsSmall.indexOf(asteroid), 1);
                     break;
                 }
             }
         }
     }
+
+    public update(timeDelta: number, scene: THREE.Scene, modelBullet: THREE.Scene, modelAsteroidSmall: THREE.Scene) {
+        this.ship.update(timeDelta);
+
+        this.shootingProcess(timeDelta, scene, modelBullet);
+        for (const bullet of this.bullets) bullet.update(timeDelta);
+        for (const bullet of this.bullets) this.checkBordersForBullet(bullet);
+        for (const asteroid of this.asteroids) asteroid.update(timeDelta);
+        for (const asteroid of this.asteroidsSmall) asteroid.update(timeDelta);
+
+        const asteroids = this.asteroids.slice(0);
+        for (const asteroid of asteroids){
+            if (asteroid.distanceCollision(this.ship) < 1.7){
+                asteroid.dispose();
+                this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
+                this.asteroidsSmall.push(new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z), new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z));
+                // this.asteroidsSmall.push(new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z));
+                this.ship.object.position.set(0,0,0);
+                this.life -= 1;
+                if (this.life == 0){
+                    this.ship.dispose();
+                }
+                continue;
+            }
+            const bullets = this.bullets.slice(0);
+            for (const bullet of bullets){
+                if (bullet.distanceCollision(asteroid) < 1.7){
+                    bullet.dispose();
+                    this.bullets.splice(this.bullets.indexOf(bullet), 1);
+                    asteroid.dispose();
+                    this.asteroidsSmall.push(new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z));
+                    this.asteroidsSmall.push(new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z));
+                    this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
+                    break;
+                }
+            }
+        }
+        this.smallAsteroidCheckCollision();
+    }
 }
 
-
-
-// for (const asteroid of this.asteroids) {
-//     asteroid.checkCollision(scene, this.ship.object.position.x, this.ship.object.position.z);
-//     console.log(this.asteroids.length);
-// }
-//     for(let i = 0; i < this.asteroids.length; i++) {
-//         if(this.asteroids[i].checkCollision(scene, this.ship.object.position.x, this.ship.object.position.z)){
-//             this.asteroids.splice(this.asteroids.indexOf(this.asteroids[i]));
-//         }
-//         console.log(this.asteroids.length);
-//     }
-//     for (const bullet of this.bullets) bullet.checkCollision(scene, this.asteroids[0].object.position.x, this.asteroids[0].object.position.z, this.asteroids[0].object);
-//     for (const bullet of this.bullets) bullet.checkCollision(scene, this.asteroids[1].object.position.x, this.asteroids[1].object.position.z, this.asteroids[1].object);
-//     for (const bullet of this.bullets) bullet.checkCollision(scene, this.asteroids[2].object.position.x, this.asteroids[2].object.position.z, this.asteroids[2].object);
-//     for (const bullet of this.bullets) bullet.checkCollision(scene, this.asteroids[3].object.position.x, this.asteroids[3].object.position.z, this.asteroids[3].object);
-//     for (const bullet of this.bullets) bullet.checkCollision(scene, this.asteroids[4].object.position.x, this.asteroids[4].object.position.z, this.asteroids[4].object);
-//     for (const bullet of this.bullets) bullet.checkCollision(scene, this.asteroids[5].object.position.x, this.asteroids[5].object.position.z, this.asteroids[5].object);
+function random(min: number, max: number) {
+    return Math.random() * (max - min) + min;
+}

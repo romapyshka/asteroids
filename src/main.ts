@@ -17,7 +17,8 @@ async function main() {
     }
     const shipObject = await load('model/ship/scene.gltf', 0.01,0.01,0.01, 0);
     const asteroidObject = await load('model/asteroid/scene.gltf',0.01,0.01,0.01, 0);
-    const bulletObject = await load('model/bullet/scene.gltf', 0.05,0.05,0.05, 1.5);
+    const asteroidSmallObject = await load('model/asteroid/scene.gltf', 0.007,0.007,0.007,0);
+    const bulletObject = await load('model/bullet/scene.gltf', 0.03,0.03,0.03, 1.5);
 
 
 
@@ -41,7 +42,7 @@ async function main() {
     const ambient = new THREE.AmbientLight("white", 0.2);
     scene.add(ambient);
 
-    const game = new Game(scene, shipObject, asteroidObject);
+    const game = new Game(scene, shipObject);
 
     game.startObjects(scene, asteroidObject);
 
@@ -53,7 +54,7 @@ async function main() {
         let timeDelta = (ts - lastTS) / 1000;
         lastTS = ts;
 
-        game.update(timeDelta, scene, bulletObject);
+        game.update(timeDelta, scene, bulletObject, asteroidSmallObject);
     }
 
     requestAnimationFrame(animate);
