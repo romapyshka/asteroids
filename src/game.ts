@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader.js';
 import Ship from "./ship";
 import Asteroid from "./asteroid";
 import Bullet from "./bullet";
@@ -11,13 +12,11 @@ export default class Game {
     private asteroidsSmall: Array<Asteroid> = [];
     private ship: Ship;
     private life: number;
-    // private asteroid: Asteroid;
 
     constructor(scene: THREE.Scene, modelShip: THREE.Scene) {
         window.addEventListener("keydown", this.handleKeyDown.bind(this));
         window.addEventListener("keyup", this.handleKeyUp.bind(this));
         this.ship = new Ship(scene, modelShip);
-        // this.asteroid = new Asteroid(scene, modelAsteroid);
         this.life = 3;
     }
 
@@ -75,7 +74,7 @@ export default class Game {
                 this.asteroidsSmall.splice(this.asteroidsSmall.indexOf(asteroid), 1);
                 this.ship.object.position.set(0,0,0);
                 this.life -= 1;
-                if (this.life == 0){
+                if (this.life < 1){
                     this.ship.dispose();
                 }
                 continue;
@@ -107,12 +106,15 @@ export default class Game {
             if (asteroid.distanceCollision(this.ship) < 1.7){
                 asteroid.dispose();
                 this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
-                this.asteroidsSmall.push(new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z), new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z));
-                // this.asteroidsSmall.push(new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z));
+                this.asteroidsSmall.push(
+                    new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z),
+                    new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z)
+                );
                 this.ship.object.position.set(0,0,0);
                 this.life -= 1;
                 if (this.life == 0){
                     this.ship.dispose();
+                    textGameOver(scene);
                 }
                 continue;
             }
@@ -122,8 +124,10 @@ export default class Game {
                     bullet.dispose();
                     this.bullets.splice(this.bullets.indexOf(bullet), 1);
                     asteroid.dispose();
-                    this.asteroidsSmall.push(new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z));
-                    this.asteroidsSmall.push(new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z));
+                    this.asteroidsSmall.push(
+                        new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z),
+                        new Asteroid(scene, modelAsteroidSmall, asteroid.object.position.x, asteroid.object.position.z)
+                    );
                     this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
                     break;
                 }
@@ -135,4 +139,28 @@ export default class Game {
 
 function random(min: number, max: number) {
     return Math.random() * (max - min) + min;
+}
+
+function textGameOver(scene: THREE.Scene) {
+
+    let loader = new THREE.FontLoader();
+    loader.load( "Cookie_Regular.json", ( font ) =>
+    {
+        let shapes = font.generateShapes( 'GAME OVER', 3);
+
+        let textShape = new THREE.BufferGeometry();
+        let geometry = new THREE.ShapeGeometry( shapes );
+        geometry.computeBoundingBox();
+
+        let material = new THREE.MeshBasicMaterial( {
+            color: 'white',
+        } );
+
+        geometry.translate( -10, 6, 0 );
+
+        textShape.fromGeometry( geometry );
+        let mesh = new THREE.Mesh( textShape, material );
+        scene.add( mesh );
+
+    } );
 }
