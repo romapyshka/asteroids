@@ -17,8 +17,9 @@ async function main() {
     }
     const shipObject = await load('model/ship/scene.gltf', 0.01,0.01,0.01, 0);
     const asteroidObject = await load('model/asteroid/scene.gltf',0.01,0.01,0.01, 0);
-    const asteroidSmallObject = await load('model/asteroid/scene.gltf', 0.007,0.007,0.007,0);
+    const asteroidSmallObject = await load('model/asteroid/scene.gltf', 0.006,0.006,0.006,0);
     const bulletObject = await load('model/bullet/scene.gltf', 0.03,0.03,0.03, 1.5);
+    const healthObject = await load('model/health/scene.gltf', 5,5,5,1);
 
 
 
@@ -31,8 +32,8 @@ async function main() {
     renderer.outputEncoding = THREE.sRGBEncoding;
     document.body.appendChild(renderer.domElement);
 
-    camera.position.z = 20;
-    camera.position.y = 20;
+    camera.position.z = 30;
+    camera.position.y = 27;
     camera.rotation.x = -45 * Math.PI / 180;
 
     const light = new THREE.PointLight("white", 1, 100);
@@ -44,7 +45,7 @@ async function main() {
 
     const game = new Game(scene, shipObject);
 
-    game.startObjects(scene, asteroidObject);
+    game.startObjects(scene, asteroidObject, healthObject);
 
     let lastTS: number = 0;
 

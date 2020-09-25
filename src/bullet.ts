@@ -21,8 +21,8 @@ export default class Bullet {
     }
 
     public update(timeDelta: number) {
-        this.object.position.x += 10 * Math.sin(this.object.rotation.y) * timeDelta;
-        this.object.position.z += 10 * Math.cos(this.object.rotation.y) * timeDelta;
+        this.object.position.x += 15 * Math.sin(this.object.rotation.y) * timeDelta;
+        this.object.position.z += 15 * Math.cos(this.object.rotation.y) * timeDelta;
     }
 
     public distanceCollision(asteroid: Asteroid){

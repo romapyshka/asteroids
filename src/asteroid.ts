@@ -13,27 +13,27 @@ export default class Asteroid {
         this.asteroidAngle = angle(Math.round(random(-180, 180)));
         this.object.position.set(
             this.object.position.x = AsteroidX,
-            this.object.position.z = 0,
-            this.object.position.z = random(-8, 8),
+            this.object.position.y = 0,
+            this.object.position.z = AsteroidZ,
         );
         scene.add(this.object);
         this.scene = scene;
     }
 
     public update(timeDelta: number) {
-        this.object.position.x -= 3 * Math.sin(this.asteroidAngle) * timeDelta;
-        this.object.position.z -= 3 * Math.cos(this.asteroidAngle) * timeDelta;
-        if (this.object.position.x > 15) {
-            this.object.position.x = -15;
+        this.object.position.x -= 5 * Math.sin(this.asteroidAngle) * timeDelta;
+        this.object.position.z -= 5 * Math.cos(this.asteroidAngle) * timeDelta;
+        if (this.object.position.x > 65) {
+            this.object.position.x = -65;
         }
-        if (this.object.position.x < -15) {
-            this.object.position.x = 15;
+        if (this.object.position.x < -65) {
+            this.object.position.x = 65;
         }
-        if (this.object.position.z > 15) {
-            this.object.position.z = -15;
+        if (this.object.position.z > 35) {
+            this.object.position.z = -95;
         }
-        if (this.object.position.z < -15) {
-            this.object.position.z = 15;
+        if (this.object.position.z < -95) {
+            this.object.position.z = 35;
         }
     }
 

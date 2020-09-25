@@ -41,8 +41,8 @@ export default class Ship {
 
     public update(timeDelta: number) {
         if(this.up){
-           this.object.position.x += 5 * Math.sin(this.object.rotation.y) * timeDelta;
-           this.object.position.z += 5 * Math.cos(this.object.rotation.y) * timeDelta;
+           this.object.position.x += 8 * Math.sin(this.object.rotation.y) * timeDelta;
+           this.object.position.z += 8 * Math.cos(this.object.rotation.y) * timeDelta;
         }
         if(this.left){
             this.object.rotation.y += 3 * timeDelta;
