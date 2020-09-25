@@ -191,26 +191,3 @@ function textGameOver(scene: THREE.Scene) {
         scene.add( mesh );
     } );
 }
-
-function textLife(scene: THREE.Scene, life: number) {
-
-    let loader = new THREE.FontLoader();
-    loader.load( "Cookie_Regular.json", ( font ) =>
-    {
-        let shapes = font.generateShapes( 'LIFE: ' + life, 1);
-
-        let textShape = new THREE.BufferGeometry();
-        let geometry = new THREE.ShapeGeometry( shapes );
-        geometry.computeBoundingBox();
-
-        let material = new THREE.MeshBasicMaterial( {
-            color: 'white',
-        } );
-
-        geometry.translate( 0, 6, 0 );
-
-        textShape.fromGeometry( geometry );
-        let mesh = new THREE.Mesh( textShape, material );
-        scene.add( mesh );
-    } );
-}
