@@ -15,7 +15,7 @@ async function main() {
             });
         });
     }
-    const shipObject = await load('model/ship/scene.gltf', 0.01,0.01,0.01, 0);
+    const shipObject = await load('model/ship/scene.gltf', 0.4,0.4,0.4, 0);
     const asteroidObject = await load('model/asteroid/scene.gltf',0.01,0.01,0.01, 0);
     const asteroidSmallObject = await load('model/asteroid/scene.gltf', 0.006,0.006,0.006,0);
     const bulletObject = await load('model/bullet/scene.gltf', 0.03,0.03,0.03, 1.5);

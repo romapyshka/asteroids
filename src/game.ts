@@ -88,7 +88,7 @@ export default class Game {
         for (const asteroid of asteroids){
             const healthObjects = this.healthObjects.slice(0);
             for (const healthObject of healthObjects){
-                if (asteroid.distanceCollision(this.ship) < 1.7){
+                if (asteroid.distanceCollision(this.ship) < 1.8){
                     asteroid.dispose();
                     this.asteroidsSmall.splice(this.asteroidsSmall.indexOf(asteroid), 1);
                     healthObject.dispose();
@@ -128,7 +128,7 @@ export default class Game {
         for (const asteroid of asteroids){
             const healthObjects = this.healthObjects.slice(0);
             for (const healthObject of healthObjects) {
-                if (asteroid.distanceCollision(this.ship) < 1.7) {
+                if (asteroid.distanceCollision(this.ship) < 1.8) {
                     asteroid.dispose();
                     this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
                     healthObject.dispose();
